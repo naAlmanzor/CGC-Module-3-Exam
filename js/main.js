@@ -1,4 +1,5 @@
 import * as THREE from './three.module.js';
+import { OrbitControls } from './OrbitControls.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -13,8 +14,18 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
 // camera.position.set(0, 90, 0);
-camera.position.set(0, 48, 50);
-camera.lookAt(0, 0, 0);
+camera.position.set(0, 0, 50);
+
+
+const controls = new OrbitControls( camera, renderer.domElement );
+controls.update();
+
+controls.keys = {
+	LEFT: 'ArrowLeft', //left arrow
+	UP: 'ArrowUp', // up arrow
+	RIGHT: 'ArrowRight', // right arrow
+	BOTTOM: 'ArrowDown' // down arrow
+}
 
 console.log('test');
 
@@ -75,7 +86,7 @@ function createRoom(){
     const room = new THREE.Group;
     const walls = new createWalls();
 
-    walls.position.y = 20;
+    walls.position.y = 19.9;
 
     room.add(walls);
 
@@ -99,4 +110,16 @@ function lighting() {
     scene.add(directionalLight);  
 }
 
-renderer.render(scene, camera);
+function animate() {
+
+	requestAnimationFrame( animate );
+
+	// required if controls.enableDamping or controls.autoRotate are set to true
+	controls.update();
+
+	renderer.render( scene, camera );
+
+}
+
+animate();
+// renderer.render(scene, camera);
