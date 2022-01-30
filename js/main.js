@@ -16,7 +16,6 @@ document.body.appendChild(renderer.domElement);
 // camera.position.set(0, 90, 0);
 camera.position.set(0, 0, 50);
 
-
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
@@ -35,7 +34,7 @@ lighting();
 function wall(width, height, depth){
     const wall = new THREE.Mesh(
         new THREE.BoxBufferGeometry(width, height, depth), 
-        new THREE.MeshLambertMaterial({color: 0xcccccc})
+        new THREE.MeshLambertMaterial({color: 0xfCCCCCC})
     )
 
     return wall;
@@ -45,59 +44,79 @@ function createWalls(){
 
     const walls = new THREE.Group;
     
-    const backWall = new wall(60, 40, 2);
-    backWall.position.z = -20;
+    const backWall = new wall(100, 68, 2);
+    backWall.position.set(16, 4, -30)
     walls.add(backWall);
 
-    const rightWall = new wall(2, 40, 40);
-    rightWall.position.x = 29;
+    const rightWall = new wall(4, 68, 60);
+    rightWall.position.y = 4;
+    rightWall.position.x = 64;
     walls.add(rightWall);
 
     const leftWallSide = new THREE.Group();
 
-    const leftWallBack = new wall(10, 40, 6);
-    leftWallBack.position.z = -16;
+    const leftWallBack = new wall(10, 68, 14);
+    leftWallBack.position.y = 4;
+    leftWallBack.position.z = -24;
     leftWallSide.add(leftWallBack);
 
-    const leftWallBtm = new wall(10, 10, 40);
-    leftWallBtm.position.y = -15;
+    const leftWallBtm = new wall(10, 10, 60);
+    leftWallBtm.position.y = -24.8;
     leftWallSide.add(leftWallBtm);
 
-    const leftWallBridge = new wall(2, 2, 40);
+    const leftWallBridge = new wall(2, 2, 60);
     leftWallBridge.position.y = 8;
     leftWallSide.add(leftWallBridge);
 
-    const leftWallFront = new wall(10, 40, 16);
-    leftWallFront.position.z = 12;
+    const leftWallFront = new wall(10, 60, 28);
+    leftWallFront.position.z = 16;
     leftWallSide.add(leftWallFront);
 
-    const leftWallTop = new wall(10, 4, 40);
-    leftWallTop.position.y = 18;
+    const leftWallTop = new wall(10, 10, 60);
+    leftWallTop.position.y = 33;
     leftWallSide.add(leftWallTop);
 
-    leftWallSide.position.x = -25;
+    leftWallSide.position.x = -30;
     walls.add(leftWallSide);
 
+    
     return walls;
 
 }
+
+
 
 function createRoom(){
     const room = new THREE.Group;
     const walls = new createWalls();
 
-    walls.position.y = 19.9;
+    walls.position.y = 29.9;
+    walls.position.x = -5
 
     room.add(walls);
 
+    const roof = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(100, 60, 1, 1),
+        new THREE.MeshLambertMaterial({color: 0xcccccc})
+    )
+    roof.material.side = THREE.DoubleSide;
+    roof.position.x = 10;
+    roof.position.y = 68;
+    roof.rotation.x = 11;
+    room.add(roof);
+
     const floor = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(60, 40, 1, 1),
+        new THREE.PlaneBufferGeometry(100, 60, 1, 1),
         new THREE.MeshLambertMaterial({color: 0xcccccc})
     )
     floor.material.side = THREE.DoubleSide;
     floor.rotation.x = 11;
+    floor.position.x = 10;
     room.add(floor);
 
+
+
+    room.position.y = -20;
     scene.add(room);
 }
 
@@ -113,8 +132,6 @@ function lighting() {
 function animate() {
 
 	requestAnimationFrame( animate );
-
-	// required if controls.enableDamping or controls.autoRotate are set to true
 	controls.update();
 
 	renderer.render( scene, camera );
@@ -122,4 +139,3 @@ function animate() {
 }
 
 animate();
-// renderer.render(scene, camera);
