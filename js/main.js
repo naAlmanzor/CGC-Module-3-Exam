@@ -13,9 +13,7 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// camera.position.set(0, 90, 0);
-camera.position.set(0, 0, 50);
-
+camera.position.set(0, 0, 24);
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
@@ -194,11 +192,11 @@ function createTextures(){
     const woodTextureBox = new THREE.TextureLoader().load("../assets/textures/box-wood-texture.png");
 
     const boxTexture = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(32, 36, 20), new THREE.MeshLambertMaterial({map: woodTextureBox})
+        new THREE.BoxBufferGeometry(32, 37.6, 20), new THREE.MeshLambertMaterial({map: woodTextureBox})
     )
     boxTexture.position.x = 42;
     boxTexture.position.z = -10;
-    boxTexture.position.y = 18.09;
+    boxTexture.position.y = 19.1;
     textures.add(boxTexture)
 
     const woodTextureTop = new THREE.TextureLoader().load("../assets/textures/roof-wood-texture.png");
