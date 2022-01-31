@@ -55,25 +55,26 @@ function createWalls(){
 
     const leftWallSide = new THREE.Group();
 
-    const leftWallBack = new wall(10, 68, 14);
+    const leftWallBack = new wall(10, 68, 10);
     leftWallBack.position.y = 4;
-    leftWallBack.position.z = -24;
+    leftWallBack.position.z = -26;
     leftWallSide.add(leftWallBack);
 
     const leftWallBtm = new wall(10, 15, 60);
     leftWallBtm.position.y = -23;
     leftWallSide.add(leftWallBtm);
 
-    const leftWallBridge = new wall(2, 2, 60);
-    leftWallBridge.position.y = 8;
+    const leftWallBridge = new wall(4, 4, 60);
+    leftWallBridge.position.x = -2;
+    leftWallBridge.position.y = 6;
     leftWallSide.add(leftWallBridge);
 
-    const leftWallFront = new wall(10, 60, 28);
-    leftWallFront.position.z = 16;
+    const leftWallFront = new wall(10, 60, 34);
+    leftWallFront.position.z = 13;
     leftWallSide.add(leftWallFront);
 
-    const leftWallTop = new wall(10, 10, 60);
-    leftWallTop.position.y = 33;
+    const leftWallTop = new wall(10, 20, 60);
+    leftWallTop.position.y = 28;
     leftWallSide.add(leftWallTop);
 
     leftWallSide.position.x = -30;
@@ -111,6 +112,7 @@ function createStairs(){
     stairHandle.rotation.z = 6.9;
     stairHandle.position.x = 3;
     stairHandle.position.y = 28;
+    stairHandle.position.z = -3.8;
     stairCase.add(stairHandle)
 
 
@@ -186,11 +188,35 @@ function createStairs(){
     return stairCase;
 }
 
+function createTextures(){
+    const textures = new THREE.Group;
+    
+    const woodTextureBox = new THREE.TextureLoader().load("../assets/textures/box-wood-texture.png");
+
+    const boxTexture = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(32, 36, 20), new THREE.MeshLambertMaterial({map: woodTextureBox})
+    )
+    boxTexture.position.x = 42;
+    boxTexture.position.z = -10;
+    boxTexture.position.y = 18.09;
+    textures.add(boxTexture)
+
+    const woodTextureTop = new THREE.TextureLoader().load("../assets/textures/roof-wood-texture.png");
+
+    const topTexture = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(32, 14, 60), new THREE.MeshLambertMaterial({    map: woodTextureTop})
+    )
+    topTexture.position.x = -14;
+    topTexture.position.y = 60.8;
+    textures.add(topTexture)
+
+    return textures;
+}
 
 function createRoom(){
     const room = new THREE.Group;
-    const walls = new createWalls();
 
+    const walls = new createWalls();
     walls.position.y = 29.9;
     walls.position.x = -5
 
@@ -219,6 +245,9 @@ function createRoom(){
     stairs.position.z = -25
     stairs.position.y = 0.09;
     room.add(stairs);
+
+    const textures = new createTextures();
+    room.add(textures)
 
     room.position.y = -20;
     scene.add(room);
