@@ -284,6 +284,189 @@ function createTextures(){
     return textures;
 }
 
+function createTable(){
+    const tableSet = new THREE.Group;
+
+    function build(width, height, depth){
+        const tableStand = new THREE.Mesh(
+            new THREE.BoxBufferGeometry(width, height, depth),
+            new THREE.MeshLambertMaterial({color: 0xED723F})
+        )
+        
+        tableStand.position.y = 2.1;
+        return tableStand
+    }
+    
+    function tablePt1(){
+        
+        const boxGrp = new THREE.Group; 
+        
+        const vLeft = new build(0.3, 4, 0.2);
+        boxGrp.add(vLeft);
+
+        const vRight = new build(0.3, 4, 0.2);
+        vRight.position.x =  -12;
+        boxGrp.add(vRight);
+
+        const hLeft = new build(12, 0.1, 0.2);
+        hLeft.position.set(-6, 4.1, 0);
+        boxGrp.add(hLeft);
+
+        const hRight = new build(12, 0.1, 0.2);
+        hRight.position.set(-6, 0.1, 0);
+        boxGrp.add(hRight);
+
+        const pointGap = new build(1, 0.3, 0.2);
+        pointGap.position.set(-11.63, 4.2, 0);
+        boxGrp.add(pointGap);
+
+        return boxGrp;
+    }
+
+    function tablePt2(){
+        const boxGrp = new THREE.Group; 
+        
+        const vLeft = new build(1, 0.2, 2);
+        vLeft.position.y =  4.2;
+        boxGrp.add(vLeft);
+
+        const vRight = new build(0.4, 0.2, 2);
+        vRight.position.x = -12.4;
+        vRight.position.y = 0.4;
+        vRight.rotation.z = 0.3;
+        boxGrp.add(vRight);
+
+        const hLeft = new build(13, 0.1, 0.2);
+        hLeft.position.set(-6, 2.4, 0.8);
+        hLeft.rotation.z = 0.3;
+        boxGrp.add(hLeft);
+
+        const hRight = new build(13, 0.1, 0.2);
+        hRight.position.set(-6, 2.4, -0.8);
+        hRight.rotation.z = 0.3;
+        boxGrp.add(hRight);
+
+        return boxGrp;
+    }
+
+    const glass = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(14, 0.1, 4.6),
+        new THREE.MeshLambertMaterial({
+            color: 0x777777,
+            opacity: 0.9,
+            transparent: true
+        })
+    )
+    glass.position.y = 4.4
+    glass.position.x = -6
+    tableSet.add(glass)
+    
+    const tableStandV = new tablePt1();
+    tableSet.add(tableStandV);
+
+    const tableStandH = new tablePt2();
+    tableSet.add(tableStandH);
+
+    function createVasePlant(){
+        const vaseSet = new THREE.Group;
+        
+        const vaseCylinder = new THREE.Mesh(
+            new THREE.CylinderBufferGeometry(0.9, 0.9, 0.2, 32),
+            new THREE.MeshLambertMaterial({color: 0xBCB0A0})
+        )
+        vaseSet.add(vaseCylinder);
+
+        const vaseInside = new THREE.Mesh(
+            new THREE.CylinderBufferGeometry(0.9, 0.9, 0.1, 32),
+            new THREE.MeshLambertMaterial({color: 0xBCB0A0})
+        )
+        vaseSet.add(vaseInside);
+        
+        function createVase(){
+            const vaseGrp = new THREE.Group; 
+            const vase = new THREE.Mesh(
+                new THREE.CylinderBufferGeometry(0.6, 0.6, 0.2, 32),
+                new THREE.MeshLambertMaterial({color: 0xBCB0A0})
+            )
+            vase.position.y = 0.3
+            vaseGrp.add(vase);
+            
+            const vaseColor = new THREE.Mesh(
+                new THREE.CylinderBufferGeometry(0.6, 0.6, 0.5, 32),
+                new THREE.MeshLambertMaterial({color: 0xED723F})
+            )
+            vaseGrp.add(vaseColor);
+
+            return vaseGrp;
+        }
+
+        const pottedPlant = new createVase();
+        vaseSet.add(pottedPlant)
+
+        return vaseSet;
+    }
+
+    const vase = new createVasePlant();
+    vase.position.set(-0.6, 4.6, 0)
+    tableSet.add(vase);
+
+    function createTab(){
+        const drinkTab = new THREE.Group;
+
+        function createSides(width, depth){
+            const side = new THREE.Mesh(
+                new THREE.BoxBufferGeometry(width, 0.4, depth),
+                new THREE.MeshLambertMaterial({color: 0x333333})
+            );
+            return side;
+        }
+
+        const leftSide = new createSides(3, 0.1);
+        leftSide.position.z = 0.5
+        drinkTab.add(leftSide); 
+        const rightSide = new createSides(3, 0.1);
+        rightSide.position.z = -0.5
+        drinkTab.add(rightSide); 
+        const topSide = new createSides(0.1, 1);
+        topSide.position.x = 1.5;
+        drinkTab.add(topSide); 
+        const backSide = new createSides(0.1, 1);
+        backSide.position.x = -1.5;
+        drinkTab.add(backSide); 
+
+        const bottom = new THREE.Mesh(
+            new THREE.PlaneBufferGeometry(3, 1, 1, 1),
+            new THREE.MeshLambertMaterial({color: 0x333333})
+        )
+        bottom.material.side = THREE.DoubleSide;
+        bottom.rotation.x = Math.PI/2
+        drinkTab.add(bottom)
+
+        return drinkTab;
+    }
+
+    const tab = new createTab();
+    tab.position.set(-5, 4.6, 0);
+    tab.rotation.y = -0.3;
+    tableSet.add(tab);
+
+    const cup1 = new THREE.Mesh(
+        new THREE.CylinderBufferGeometry(0.3, 0.3, 1, 32),
+        new THREE.MeshLambertMaterial({color: 0x555555})
+    )
+    cup1.position.set(-5.3, 4.9, -0.1)
+    tableSet.add(cup1);
+
+    const cup2 = new THREE.Mesh(
+        new THREE.CylinderBufferGeometry(0.3, 0.3, 0.4, 32),
+        new THREE.MeshLambertMaterial({color: 0x666666})
+    )
+    cup2.position.set(-6, 4.9, -0.1)
+    tableSet.add(cup2);
+
+    return tableSet
+}
+
 function createRoom(){
     const room = new THREE.Group;
 
@@ -343,6 +526,11 @@ function createRoom(){
     
     smallEggFurniture.rotation.z = -(Math.PI/2)
     smallEggFurniture.position.set(-30, 30, -4)
+
+    const table = new createTable();
+    table.position.set(24, 0.5, -15);
+    table.scale.set(1.4,1.4,1.4)
+    room.add(table)
 
     room.add(smallEggFurniture);
     room.position.y = -20;
