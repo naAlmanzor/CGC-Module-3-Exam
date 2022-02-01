@@ -467,6 +467,25 @@ function createTable(){
     return tableSet
 }
 
+function createWindowPlant(){
+    const windowPlant = new THREE.Group;
+
+    const vaseBtm = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(3, 3, 3),
+        new THREE.MeshLambertMaterial({color: 0x888888})
+    ) 
+    windowPlant.add(vaseBtm);
+
+    const vaseTop = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(3, 1, 3),
+        new THREE.MeshLambertMaterial({color: 0xBCB0A0})
+    ) 
+    vaseTop.position.y = 2;
+    windowPlant.add(vaseTop);
+
+    return windowPlant;
+}
+
 function createRoom(){
     const room = new THREE.Group;
 
@@ -523,7 +542,8 @@ function createRoom(){
     )
     smallEgg.position.y = 0.5; 
     smallEggFurniture.add(smallEgg);
-    
+    room.add(smallEggFurniture);
+
     smallEggFurniture.rotation.z = -(Math.PI/2)
     smallEggFurniture.position.set(-30, 30, -4)
 
@@ -532,7 +552,10 @@ function createRoom(){
     table.scale.set(1.4,1.4,1.4)
     room.add(table)
 
-    room.add(smallEggFurniture);
+    const windowPlant = new createWindowPlant();
+    windowPlant.position.set(-32, 15, -12)
+    room.add(windowPlant);
+
     room.position.y = -20;
     scene.add(room);
 }
