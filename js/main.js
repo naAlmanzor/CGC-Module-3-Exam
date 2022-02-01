@@ -397,6 +397,20 @@ function createTable(){
             )
             vaseGrp.add(vaseColor);
 
+            const texture = new THREE.TextureLoader().load("../assets/images/branch.png")
+
+            const plant = new THREE.Mesh(
+                new THREE.PlaneBufferGeometry(2,2,2),
+                new THREE.MeshLambertMaterial({
+                    color: 0x333333,
+                    map: texture,
+                    transparent: true
+                })
+            ) 
+            plant.position.y = 1.4;
+            vaseGrp.add(plant);
+        
+
             return vaseGrp;
         }
 
@@ -468,6 +482,7 @@ function createTable(){
 }
 
 function createWindowPlant(){
+
     const windowPlant = new THREE.Group;
 
     const vaseBtm = new THREE.Mesh(
@@ -482,6 +497,20 @@ function createWindowPlant(){
     ) 
     vaseTop.position.y = 2;
     windowPlant.add(vaseTop);
+
+    const texture = new THREE.TextureLoader().load("../assets/images/plant.png")
+
+    const plant = new THREE.Mesh(
+        new THREE.PlaneBufferGeometry(10,10,10),
+        new THREE.MeshLambertMaterial({
+            color: 0x888888,
+            map: texture,
+            transparent: true
+        })
+    ) 
+    plant.position.x = 0.6;
+    plant.position.y = 6;
+    windowPlant.add(plant);
 
     return windowPlant;
 }
