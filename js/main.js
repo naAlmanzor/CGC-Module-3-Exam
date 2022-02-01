@@ -94,9 +94,9 @@ function createStairs(){
     stairsPad.position.y = 3.1;
     stairCase.add(stairsPad)
 
-    const longStair = new creatStair(36, 24.2, 14)
+    const longStair = new creatStair(36, 27, 14)
     longStair.position.x = 37.9;
-    longStair.position.y = 18.4;
+    longStair.position.y = 19.4;
     stairCase.add(longStair)
 
     const stairHandle = new creatStair(26, 0.69, 1)
