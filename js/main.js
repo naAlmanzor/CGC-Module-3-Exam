@@ -17,13 +17,6 @@ camera.position.set(0, 0, 24);
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
-controls.keys = {
-	LEFT: 'ArrowLeft', //left arrow
-	UP: 'ArrowUp', // up arrow
-	RIGHT: 'ArrowRight', // right arrow
-	BOTTOM: 'ArrowDown' // down arrow
-}
-
 console.log('test');
 
 createRoom();
@@ -67,8 +60,8 @@ function createWalls(){
     leftWallBridge.position.y = 6;
     leftWallSide.add(leftWallBridge);
 
-    const leftWallFront = new wall(10, 60, 34);
-    leftWallFront.position.z = 13;
+    const leftWallFront = new wall(10, 60, 38);
+    leftWallFront.position.z = 11;
     leftWallSide.add(leftWallFront);
 
     const leftWallTop = new wall(10, 20, 60);
@@ -96,13 +89,13 @@ function createStairs(){
 
     const stairCase = new THREE.Group;
     
-    const stairsPad = new creatStair(75, 6, 10)
-    stairsPad.position.x = 20;
+    const stairsPad = new creatStair(75, 6, 14)
+    stairsPad.position.x = 14.5;
     stairsPad.position.y = 3.1;
     stairCase.add(stairsPad)
 
-    const longStair = new creatStair(36, 24.2, 10)
-    longStair.position.x = 39.2;
+    const longStair = new creatStair(36, 24.2, 14)
+    longStair.position.x = 37.9;
     longStair.position.y = 18.4;
     stairCase.add(longStair)
 
@@ -110,16 +103,17 @@ function createStairs(){
     stairHandle.rotation.z = 6.9;
     stairHandle.position.x = 3;
     stairHandle.position.y = 28;
-    stairHandle.position.z = -3.8;
+    stairHandle.position.z = -5;
     stairCase.add(stairHandle)
 
+    const stairCaseUpper = new THREE.Group;
 
     function createStairSize(sHeight, lHeight){
         const sStair = new THREE.Group;
-        const stairBuildS = new creatStair(4, sHeight, 10)
+        const stairBuildS = new creatStair(4, sHeight, 14)
         sStair.add(stairBuildS)
     
-        const stairBuildL = new creatStair(6, lHeight, 10)
+        const stairBuildL = new creatStair(6, lHeight, 14)
         stairBuildL.position.x = -2;
         stairBuildL.position.y = -1.6;
         sStair.add(stairBuildL)
@@ -128,28 +122,28 @@ function createStairs(){
     }
 
     const sStairBtm = new createStairSize(6, 3);
-    sStairBtm.position.set(-12.5, 3.1, 7);
+    sStairBtm.position.set(-16, 3.1, 7);
     sStairBtm.rotation.y = -4.71;
     stairCase.add(sStairBtm);
 
     const sStairTop = new createStairSize(6, 3);
     sStairTop.position.set(-2.6, 9.3, 0);
-    stairCase.add(sStairTop);
+    stairCaseUpper.add(sStairTop);
 
     const mStairTop = new createStairSize(12.2, 9);
     mStairTop.position.x = 4.5;
     mStairTop.position.y = 12.4;
-    stairCase.add(mStairTop);
+    stairCaseUpper.add(mStairTop);
 
     const lStairTop = new createStairSize(18.2, 15);
     lStairTop.position.x = 11.7;
     lStairTop.position.y = 15.4;
-    stairCase.add(lStairTop);
+    stairCaseUpper.add(lStairTop);
 
     const xlStairTop = new createStairSize(24.2, 21);
     xlStairTop.position.x = 18.91;
     xlStairTop.position.y = 18.4;
-    stairCase.add(xlStairTop);
+    stairCaseUpper.add(xlStairTop);
 
     function createStairGap(width, height, depth){
     
@@ -158,32 +152,111 @@ function createStairs(){
         return stairGap;
     }
 
-    const sStairGap = new createStairGap(0.2, 6, 10)
+    const sStairGap = new createStairGap(0.2, 6, 14)
     sStairGap.position.x = -0.5
     sStairGap.position.y = 9.3
-    stairCase.add(sStairGap);
+    stairCaseUpper.add(sStairGap);
 
-    const mStairGap = new createStairGap(0.2, 12.2, 10)
+    const mStairGap = new createStairGap(0.2, 12.2, 14)
     mStairGap.position.x = 6.6
     mStairGap.position.y = 12.4
-    stairCase.add(mStairGap);
+    stairCaseUpper.add(mStairGap);
 
-    const lStairGap = new createStairGap(0.2, 18.2, 10)
+    const lStairGap = new createStairGap(0.2, 18.2, 14)
     lStairGap.position.x = 13.8
     lStairGap.position.y = 15.4
-    stairCase.add(lStairGap);
+    stairCaseUpper.add(lStairGap);
 
-    const xlStairGap = new createStairGap(0.2, 24.2, 10)
+    const xlStairGap = new createStairGap(0.2, 24.2, 14)
     xlStairGap.position.x = 21
     xlStairGap.position.y = 18.4
-    stairCase.add(xlStairGap);
+    stairCaseUpper.add(xlStairGap);
 
-    const stairPadGap = new createStairGap(66, 0.2, 10)
+    const stairPadGap = new createStairGap(66, 0.2, 14)
     stairPadGap.position.x = 25.4
     stairPadGap.position.y = 6.2
-    stairCase.add(stairPadGap);
+    stairCaseUpper.add(stairPadGap);
+    
+    stairCaseUpper.position.x = -1.2;
+
+    stairCase.add(stairCaseUpper);
 
     return stairCase;
+}
+
+function createRadiator(){
+
+    function createRadiatorSpot(closer){
+        const radiatorSpot = new THREE.Group;
+
+        const height = 9;
+        const depth = 12;
+
+        const radiatorSpotW = new THREE.Mesh(
+            new THREE.BoxBufferGeometry(1, height, depth),
+            new THREE.MeshLambertMaterial({color: 0xcccccc})
+        )
+        radiatorSpot.add(radiatorSpotW)
+        
+        const check = closer
+        if (check!="yes"){
+            const radiatorSpotD = new THREE.Mesh(
+                new THREE.BoxBufferGeometry(0.1, height, depth),
+                new THREE.MeshLambertMaterial({color: 0x22222})
+            )
+            radiatorSpotD.position.x = 0.6;
+            radiatorSpot.add(radiatorSpotD);    
+        }
+        return radiatorSpot;
+    }
+    const radiator = new THREE.Group;
+    const radiatorPt1 = new createRadiatorSpot();
+    radiator.add(radiatorPt1);
+    const radiatorPt2 = new createRadiatorSpot();
+    radiatorPt2.position.x = 1.2;
+    radiator.add(radiatorPt2);
+    const radiatorPt3 = new createRadiatorSpot();
+    radiatorPt3.position.x = 2.4;
+    radiator.add(radiatorPt3);
+    const radiatorPt4 = new createRadiatorSpot();
+    radiatorPt4.position.x = 3.6;
+    radiator.add(radiatorPt4);
+    const radiatorCloser =  new createRadiatorSpot("yes");
+    radiatorCloser.position.x = 4.8;
+    radiator.add(radiatorCloser);
+
+    return radiator;
+}
+
+function createChandelier(){
+    
+    const chandelier = new THREE.Group;
+    
+    var points = [];
+    for ( var deg = 0; deg <= 180; deg += 6 ) {
+        var rad = Math.PI * deg / 180;
+        var point = new THREE.Vector2( ( 0.72 + .08 * Math.cos( rad ) ) * Math.sin( rad ), - Math.cos( rad ) );
+        points.push( point );
+    }
+
+    const geometry = new THREE.LatheBufferGeometry( points, 32 );
+
+    const egg = new THREE.Mesh(
+        geometry,
+        new THREE.MeshLambertMaterial({color: 0xcccccc})
+    )
+    egg.scale.set(1.9, 1.4, 2); 
+    egg.rotateX(60);
+    chandelier.add(egg);
+
+    const handler = new THREE.Mesh(
+        new THREE.CylinderGeometry( 0.2, 0.2, 10, 32 ), 
+        new THREE.MeshLambertMaterial({color: 0x333333})
+    )
+    handler.position.y = 5;
+    handler.position.z = 0;
+    chandelier.add(handler);
+    return chandelier;
 }
 
 function createTextures(){
@@ -192,10 +265,10 @@ function createTextures(){
     const woodTextureBox = new THREE.TextureLoader().load("../assets/textures/box-wood-texture.png");
 
     const boxTexture = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(32, 37.6, 20), new THREE.MeshLambertMaterial({map: woodTextureBox})
+        new THREE.BoxBufferGeometry(32, 37.6, 16), new THREE.MeshLambertMaterial({map: woodTextureBox})
     )
     boxTexture.position.x = 42;
-    boxTexture.position.z = -10;
+    boxTexture.position.z = -8.6;
     boxTexture.position.y = 19.1;
     textures.add(boxTexture)
 
@@ -240,13 +313,38 @@ function createRoom(){
     room.add(floor);
 
     const stairs = new createStairs();
-    stairs.position.z = -25
+    stairs.position.z = -23.9   
     stairs.position.y = 0.09;
     room.add(stairs);
 
     const textures = new createTextures();
-    room.add(textures)
+    room.add(textures);
 
+    const chandelier = new createChandelier();
+    chandelier.position.set(-1, 45, -20);
+    room.add(chandelier);
+
+    const radiator = new createRadiator();
+    radiator.position.set(-29.5, 7, -14)
+    room.add(radiator);
+
+    const smallEggFurniture = new THREE.Group;
+    const eggHolder = new THREE.Mesh(
+        new THREE.CylinderBufferGeometry( 1.5, 1.5, 0.8, 32 ),
+        new THREE.MeshPhongMaterial( {color: 0xED723F} )
+    )
+    smallEggFurniture.add(eggHolder);
+    const smallEgg = new THREE.Mesh(
+        new THREE.SphereBufferGeometry(0.5, 32, 16),
+        new THREE.MeshLambertMaterial({color: 0xcccccc})
+    )
+    smallEgg.position.y = 0.5; 
+    smallEggFurniture.add(smallEgg);
+    
+    smallEggFurniture.rotation.z = -(Math.PI/2)
+    smallEggFurniture.position.set(-30, 30, -4)
+
+    room.add(smallEggFurniture);
     room.position.y = -20;
     scene.add(room);
 }
