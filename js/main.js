@@ -20,8 +20,6 @@ camera.position.set(0, 0, 24);
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
-console.log('test');
-
 createRoom();
 lighting();
 
@@ -228,9 +226,6 @@ function createRadiator(){
             radiatorSpotD.position.x = 0.6;
             radiatorSpot.add(radiatorSpotD);    
         }
-
-        // radiatorSpotW.castShadow = true;
-        // radiatorSpotW.receiveShadow = true;
         return radiatorSpot;
     }
     const radiator = new THREE.Group;
@@ -651,6 +646,7 @@ function lighting() {
     lightWindow2.shadow.mapSize.width = 1000;
     lightWindow2.shadow.mapSize.height = 1000;
 
+    // Table shadow
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
     directionalLight.position.set(-25, 50, -4);
     directionalLight.target.position.set(-25, 0, -4);
@@ -665,7 +661,7 @@ function lighting() {
 
     directionalLight.castShadow = true;
 
-
+    // Radiator Shadow
     const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.2);
     directionalLight2.position.set(-30, 50, -12);
     directionalLight2.target.position.set(-8, 0, -12);
@@ -683,6 +679,7 @@ function lighting() {
 
     directionalLight2.castShadow = true;
 
+    // Internal Shadow
     const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.1);
     directionalLight3.position.set(-20, -20, 30);
     directionalLight3.target.position.set(0, 0, 10);
