@@ -12,6 +12,9 @@ const camera = new THREE.PerspectiveCamera(
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+scene.background = new THREE.Color(0xffffff);
 
 camera.position.set(0, 0, 24);
 const controls = new OrbitControls( camera, renderer.domElement );
@@ -27,16 +30,16 @@ function createWalls(){
     function wall(width, height, depth){
         const wall = new THREE.Mesh(
             new THREE.BoxBufferGeometry(width, height, depth), 
-            new THREE.MeshLambertMaterial({color: 0xfCCCCCC})
+            new THREE.MeshStandardMaterial({color: 0xd9d9d9})
         )
-    
         return wall;
     }
 
     const walls = new THREE.Group;
     
     const backWall = new wall(100, 68, 2);
-    backWall.position.set(16, 4, -30)
+    backWall.position.set(16, 4, -30);
+    backWall.receiveShadow = true;
     walls.add(backWall);
 
     const rightWall = new wall(4, 68, 60);
@@ -50,12 +53,23 @@ function createWalls(){
     leftWallBack.position.y = 4;
     leftWallBack.position.z = -26;
     leftWallSide.add(leftWallBack);
+    leftWallBack.castShadow = true;
+    leftWallBack.receiveShadow = true;
 
     const leftWallBtm = new wall(10, 15, 60);
     leftWallBtm.position.y = -23;
+    leftWallBtm.receiveShadow = true;
     leftWallSide.add(leftWallBtm);
 
-    const leftWallBridge = new wall(4, 4, 60);
+    const leftWallBridge = new THREE.Mesh(
+        new THREE.BoxBufferGeometry(4, 4, 50), 
+        new THREE.MeshPhongMaterial({color: 0x444444, 
+        emissive: 0x4f4f4f,
+        specular: 0x111111,
+        shininess: 38,
+        reflectivity: 1
+    })
+    )
     leftWallBridge.position.x = -2;
     leftWallBridge.position.y = 6;
     leftWallSide.add(leftWallBridge);
@@ -70,7 +84,6 @@ function createWalls(){
 
     leftWallSide.position.x = -30;
     walls.add(leftWallSide);
-
     
     return walls;
 
@@ -81,9 +94,10 @@ function createStairs(){
     function creatStair(width, height, depth){
         const stair = new THREE.Mesh(
             new THREE.BoxBufferGeometry(width, height, depth),
-            new THREE.MeshLambertMaterial({color: 0xBCB0A0})
+            new THREE.MeshStandardMaterial({color: 0xBCB0A0})
         )
-        
+        stair.castShadow = true
+        stair.receiveShadow = true
         return stair
     }
 
@@ -97,6 +111,7 @@ function createStairs(){
     const longStair = new creatStair(36, 27, 14)
     longStair.position.x = 37.9;
     longStair.position.y = 19.4;
+    longStair.receiveShadow = true;
     stairCase.add(longStair)
 
     const stairHandle = new creatStair(26, 0.69, 1)
@@ -104,6 +119,9 @@ function createStairs(){
     stairHandle.position.x = 3;
     stairHandle.position.y = 28;
     stairHandle.position.z = -5;
+
+    stairHandle.castShadow = true;
+    stairHandle.receiveShadow = true;
     stairCase.add(stairHandle)
 
     const stairCaseUpper = new THREE.Group;
@@ -124,6 +142,9 @@ function createStairs(){
     const sStairBtm = new createStairSize(6, 3);
     sStairBtm.position.set(-16, 3.1, 7);
     sStairBtm.rotation.y = -4.71;
+
+    sStairBtm.castShadow = true;
+    sStairBtm.receiveShadow = true;
     stairCase.add(sStairBtm);
 
     const sStairTop = new createStairSize(6, 3);
@@ -207,6 +228,9 @@ function createRadiator(){
             radiatorSpotD.position.x = 0.6;
             radiatorSpot.add(radiatorSpotD);    
         }
+
+        // radiatorSpotW.castShadow = true;
+        // radiatorSpotW.receiveShadow = true;
         return radiatorSpot;
     }
     const radiator = new THREE.Group;
@@ -265,20 +289,23 @@ function createTextures(){
     const woodTextureBox = new THREE.TextureLoader().load("../assets/textures/box-wood-texture.png");
 
     const boxTexture = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(32, 37.6, 16), new THREE.MeshLambertMaterial({map: woodTextureBox})
+        new THREE.BoxBufferGeometry(32, 37.6, 16), new THREE.MeshStandardMaterial({map: woodTextureBox})
     )
     boxTexture.position.x = 42;
     boxTexture.position.z = -8.6;
     boxTexture.position.y = 19.1;
+    boxTexture.receiveShadow = true;
     textures.add(boxTexture)
 
     const woodTextureTop = new THREE.TextureLoader().load("../assets/textures/roof-wood-texture.png");
 
     const topTexture = new THREE.Mesh(
-        new THREE.BoxBufferGeometry(32, 14, 60), new THREE.MeshLambertMaterial({    map: woodTextureTop})
+        new THREE.BoxBufferGeometry(32, 14, 60), new THREE.MeshStandardMaterial({    map: woodTextureTop})
     )
     topTexture.position.x = -14;
     topTexture.position.y = 60.8;
+    topTexture.castShadow = true;
+    topTexture.receiveShadow = true;    
     textures.add(topTexture)
 
     return textures;
@@ -511,7 +538,9 @@ function createWindowPlant(){
     plant.position.x = 0.6;
     plant.position.y = 6;
     windowPlant.add(plant);
-
+    
+    vaseTop.castShadow = true;
+    vaseBtm.castShadow = true;
     return windowPlant;
 }
 
@@ -525,21 +554,25 @@ function createRoom(){
     room.add(walls);
 
     const roof = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(100, 60, 1, 1),
+        new THREE.PlaneBufferGeometry(100, 60),
         new THREE.MeshLambertMaterial({color: 0xcccccc})
     )
     roof.material.side = THREE.DoubleSide;
     roof.position.x = 10;
     roof.position.y = 68;
-    roof.rotation.x = 11;
+    roof.rotation.x = Math.PI*-.5;
+
+    roof.receiveShadow = true;
     room.add(roof);
 
     const floor = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(100, 60, 1, 1),
-        new THREE.MeshLambertMaterial({color: 0xcccccc})
+        new THREE.PlaneBufferGeometry(100, 60),
+        new THREE.MeshStandardMaterial({color: 0x94979c,
+        material: THREE.DoubleSide})
     )
     floor.material.side = THREE.DoubleSide;
-    floor.rotation.x = 11;
+    floor.receiveShadow=true;
+    floor.rotation.x = Math.PI*-.5;
     floor.position.x = 10;
     room.add(floor);
 
@@ -556,7 +589,7 @@ function createRoom(){
     room.add(chandelier);
 
     const radiator = new createRadiator();
-    radiator.position.set(-29.5, 7, -14)
+    radiator.position.set(-29.5, 8, -14)
     room.add(radiator);
 
     const smallEggFurniture = new THREE.Group;
@@ -582,7 +615,7 @@ function createRoom(){
     room.add(table)
 
     const windowPlant = new createWindowPlant();
-    windowPlant.position.set(-32, 15, -12)
+    windowPlant.position.set(-34, 15, -12);
     room.add(windowPlant);
 
     room.position.y = -20;
@@ -590,12 +623,85 @@ function createRoom(){
 }
 
 function lighting() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-    
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(200, 500, 300);
-    scene.add(directionalLight);  
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight)
+
+    const lightWindow = new THREE.SpotLight(0xffffff, 0.4); 
+    lightWindow.position.set(-70, 10, -20);
+    lightWindow.target.position.set(0, 10, -20);
+
+    lightWindow.castShadow = true;
+    scene.add(lightWindow);
+    scene.add(lightWindow.target);
+
+    lightWindow.shadow.mapSize.width = 2000;
+    lightWindow.shadow.mapSize.height = 2000;
+    lightWindow.shadow.camera.far = 60;
+
+    lightWindow.shadow.camera.top = 10;
+    lightWindow.shadow.camera.left = 10;
+    lightWindow.shadow.camera.right = 30;
+
+    const lightWindow2 = new THREE.PointLight(0xffffff, 0.3); 
+    lightWindow2.position.set(-40, 6, -2);
+
+    lightWindow2.castShadow = true;
+    scene.add(lightWindow2);
+
+    lightWindow2.shadow.mapSize.width = 1000;
+    lightWindow2.shadow.mapSize.height = 1000;
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(-25, 50, -4);
+    directionalLight.target.position.set(-25, 0, -4);
+
+    directionalLight.shadow.camera.right = 0;
+    directionalLight.shadow.camera.bottom = 25;
+
+    directionalLight.castShadow = true;
+
+    scene.add(directionalLight);
+    scene.add(directionalLight.target);
+
+    directionalLight.castShadow = true;
+
+
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.2);
+    directionalLight2.position.set(-30, 50, -12);
+    directionalLight2.target.position.set(-8, 0, -12);
+
+    directionalLight2.shadow.camera.far = 100;
+   
+
+    directionalLight2.shadow.camera.right = 0;
+    directionalLight2.shadow.camera.bottom = 26;
+
+    directionalLight2.castShadow = true;
+
+    scene.add(directionalLight2);
+    scene.add(directionalLight2.target);
+
+    directionalLight2.castShadow = true;
+
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.4);
+    directionalLight3.position.set(-20, -20, 30);
+    directionalLight3.target.position.set(0, 0, 10);
+
+    directionalLight3.shadow.camera.far = 70;
+   
+
+    directionalLight3.shadow.camera.right = 50;
+    directionalLight3.shadow.camera.top = 50;
+
+    directionalLight3.shadow.mapSize.width = 400;
+    directionalLight3.shadow.mapSize.height = 600;
+
+    directionalLight3.castShadow = true;
+
+    scene.add(directionalLight3);
+    scene.add(directionalLight3.target);
+
+    directionalLight3.castShadow = true;
 }
 
 function animate() {
