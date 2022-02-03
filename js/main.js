@@ -215,7 +215,7 @@ function createRadiator(){
 
         const radiatorSpotW = new THREE.Mesh(
             new THREE.BoxBufferGeometry(1, height, depth),
-            new THREE.MeshLambertMaterial({color: 0xcccccc})
+            new THREE.MeshStandardMaterial({color: 0xcccccc})
         )
         radiatorSpot.add(radiatorSpotW)
         
@@ -223,7 +223,7 @@ function createRadiator(){
         if (check!="yes"){
             const radiatorSpotD = new THREE.Mesh(
                 new THREE.BoxBufferGeometry(0.1, height, depth),
-                new THREE.MeshLambertMaterial({color: 0x22222})
+                new THREE.MeshStandardMaterial({color: 0x22222})
             )
             radiatorSpotD.position.x = 0.6;
             radiatorSpot.add(radiatorSpotD);    
@@ -555,7 +555,7 @@ function createRoom(){
 
     const roof = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(100, 60),
-        new THREE.MeshLambertMaterial({color: 0xcccccc})
+        new THREE.MeshStandardMaterial({color: 0xcccccc})
     )
     roof.material.side = THREE.DoubleSide;
     roof.position.x = 10;
@@ -623,10 +623,10 @@ function createRoom(){
 }
 
 function lighting() {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight)
 
-    const lightWindow = new THREE.SpotLight(0xffffff, 0.4); 
+    const lightWindow = new THREE.SpotLight(0xffffff, 0.1); 
     lightWindow.position.set(-70, 10, -20);
     lightWindow.target.position.set(0, 10, -20);
 
@@ -651,7 +651,7 @@ function lighting() {
     lightWindow2.shadow.mapSize.width = 1000;
     lightWindow2.shadow.mapSize.height = 1000;
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.4);
     directionalLight.position.set(-25, 50, -4);
     directionalLight.target.position.set(-25, 0, -4);
 
@@ -683,7 +683,7 @@ function lighting() {
 
     directionalLight2.castShadow = true;
 
-    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.4);
+    const directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.1);
     directionalLight3.position.set(-20, -20, 30);
     directionalLight3.target.position.set(0, 0, 10);
 
